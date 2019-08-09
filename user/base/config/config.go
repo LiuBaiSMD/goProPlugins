@@ -38,7 +38,8 @@ func Init() {
 	dockerMode := os.Getenv("RUN_DOCKER_MODE")
 	if dockerMode == "on" {
 		log.Logf("docker模式")
-		configAddr = dockerConsulServerAddr
+		configAddr = "consul4:8500"
+		//configAddr = dockerConsulServerAddr
 	}else {
 		log.Logf("本地模式")
 		configAddr = defaultConsulServerAddr
