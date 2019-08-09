@@ -4,6 +4,7 @@ import (
 	"github.com/micro/go-micro/config"
 	"github.com/micro/go-micro/config/source/consul"
 	"github.com/micro/go-micro/util/log"
+	"os"
 	"sync"
 )
 
@@ -14,6 +15,7 @@ var (
 var (
 	defaultConfigPath       = "micro/config/cluster" // 默认的仓库地址
 	defaultConsulServerAddr = "127.0.0.1:8500"
+	dockerConsulServerAddr = "consul4:8500"
 	consulConfig            defaultConsulConfig
 	mysqlConfig             defaultMysqlConfig
 	jwtConfig               defaultJwtConfig
@@ -32,9 +34,18 @@ func Init() {
 		log.Logf("[Init] 配置已经初始化过")
 		return
 	}
+	var configAddr string = "default"
+	dockerMode := os.Getenv("RUN_DOCKER_MOD")
+	if dockerMode == "on"{
+		configAddr = dockerConsulServerAddr
+	}else {
+		configAddr = defaultConsulServerAddr
+	}
+	log.Logf("配置读取模式----> ", dockerMode, "	配置地址---->  ",configAddr)
+
 	// 从注册中心读取配置
 	consulSource := consul.NewSource(
-		consul.WithAddress(defaultConsulServerAddr),
+		consul.WithAddress(configAddr),
 		consul.WithPrefix(defaultConfigPath),
 		consul.StripPrefix(true),
 	)
