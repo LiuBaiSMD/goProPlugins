@@ -1,4 +1,4 @@
-module github.com/xuyiwenak/bambooRat/modprojects/user/base
+module base
 
 go 1.12
 

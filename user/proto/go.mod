@@ -1,4 +1,4 @@
-module github.com/xuyiwenak/bambooRat/modprojects/user/proto
+module proto
 
 go 1.12
 
