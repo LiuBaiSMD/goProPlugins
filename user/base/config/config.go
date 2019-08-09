@@ -79,7 +79,7 @@ func Init() {
 	if err := conf.Get("consul").Scan(&consulConfig); err != nil {
 		log.Logf("consul配置加载异常:%s", err)
 	}
-	log.Logf("consul配置：		", consulConfig)
+	log.Logf("consul配置：		", consulConfig, string(conf.Bytes()))
 	if err := conf.Get("mysql").Scan(&mysqlConfig); err != nil {
 		log.Logf("mysql配置加载异常:%s", err)
 	}
