@@ -1,4 +1,4 @@
-module proto
+module github.com/LiuBaiSMD/goProPlugins/user/proto
 
 go 1.12
 
