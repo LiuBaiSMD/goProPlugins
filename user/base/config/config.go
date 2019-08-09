@@ -34,11 +34,13 @@ func Init() {
 		log.Logf("[Init] 配置已经初始化过")
 		return
 	}
-	var configAddr string = "default"
-	dockerMode := os.Getenv("RUN_DOCKER_MOD")
-	if dockerMode == "on"{
+	var configAddr string
+	dockerMode := os.Getenv("RUN_DOCKER_MODE")
+	if dockerMode == "on" {
+		log.Logf("docker模式")
 		configAddr = dockerConsulServerAddr
 	}else {
+		log.Logf("本地模式")
 		configAddr = defaultConsulServerAddr
 	}
 	log.Logf("配置读取模式----> ", dockerMode, "	配置地址---->  ",configAddr)
