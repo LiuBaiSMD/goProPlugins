@@ -38,8 +38,7 @@ func Init() {
 	dockerMode := os.Getenv("RUN_DOCKER_MODE")
 	if dockerMode == "on" {
 		log.Logf("docker模式")
-		configAddr = "consul4:8500"
-		//configAddr = dockerConsulServerAddr
+		configAddr = dockerConsulServerAddr
 	}else {
 		log.Logf("本地模式")
 		configAddr = defaultConsulServerAddr
@@ -80,6 +79,7 @@ func Init() {
 	if err := conf.Get("consul").Scan(&consulConfig); err != nil {
 		log.Logf("consul配置加载异常:%s", err)
 	}
+	log.Logf("consul配置：		", consulConfig)
 	if err := conf.Get("mysql").Scan(&mysqlConfig); err != nil {
 		log.Logf("mysql配置加载异常:%s", err)
 	}
