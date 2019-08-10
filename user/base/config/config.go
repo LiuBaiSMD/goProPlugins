@@ -39,11 +39,11 @@ func Init() {
 	//	log.Logf("docker模式")
 	//	defaultConsulServerAddr = dockerConsulServerAddr
 	//}
-	log.Logf("配置读取模式----> ", dockerMode, "	配置地址---->  ",defaultConsulServerAddr)
+	log.Log("配置读取模式----> ", dockerMode, "	配置地址---->  ",defaultConsulServerAddr)
 
 	// 从注册中心读取配置
 	consulSource := consul.NewSource(
-		consul.WithAddress("127.0.0.1"),
+		consul.WithAddress("127.0.0.1:8500"),
 		consul.WithPrefix(defaultConfigPath),
 		consul.StripPrefix(true),
 	)
@@ -52,6 +52,7 @@ func Init() {
 	if err := conf.Load(consulSource); err != nil {
 		log.Logf("load config errr!!!", err)
 	}
+	log.Log("conf.map", conf.Map())
 	// 侦听文件变动
 	watcher, err := conf.Watch()
 	if err != nil {
@@ -75,8 +76,8 @@ func Init() {
 	if err := conf.Get("consul").Scan(&consulConfig); err != nil {
 		log.Logf("consul配置加载异常:%s", err)
 	}
-	log.Logf("consul配置：		", consulConfig, string(conf.Bytes()))
-	
+	log.Log("consul配置：		", consulConfig, string(conf.Bytes()))
+
 	if err := conf.Get("mysql").Scan(&mysqlConfig); err != nil {
 		log.Logf("mysql配置加载异常:%s", err)
 	}
