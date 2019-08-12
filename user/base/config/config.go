@@ -73,18 +73,18 @@ func Init() {
 		}
 	}()
 	// 赋值
-	if err := conf.Get("consul").Scan(&consulConfig); err != nil {
+	if err := conf.Get("cluster","consul").Scan(&consulConfig); err != nil {
 		log.Logf("consul配置加载异常:%s", err)
 	}
 	log.Log("consul配置：		", consulConfig, string(conf.Bytes()))
 
-	if err := conf.Get("mysql").Scan(&mysqlConfig); err != nil {
+	if err := conf.Get("cluster","mysql").Scan(&mysqlConfig); err != nil {
 		log.Logf("mysql配置加载异常:%s", err)
 	}
-	if err := conf.Get("redis").Scan(&redisConfig); err != nil {
+	if err := conf.Get("cluster","redis").Scan(&redisConfig); err != nil {
 		log.Logf("redis配置加载异常:%s", err)
 	}
-	if err := conf.Get("jwt").Scan(&jwtConfig); err != nil {
+	if err := conf.Get("cluster","jwt").Scan(&jwtConfig); err != nil {
 		log.Logf("jwt配置加载异常:%s", err)
 	}
 
