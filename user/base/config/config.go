@@ -6,6 +6,7 @@ import (
 	"github.com/micro/go-micro/util/log"
 	"os"
 	"sync"
+	"time"
 )
 
 var (
@@ -42,16 +43,22 @@ func Init() {
 	log.Log("配置读取模式----> ", dockerMode, "	配置地址---->  ",defaultConsulServerAddr)
 
 	// 从注册中心读取配置
-	consulSource := consul.NewSource(
-		consul.WithAddress(defaultConsulServerAddr),
-		consul.WithPrefix(defaultConfigPath),
-		consul.StripPrefix(true),
-	)
-	// 创建新的配置
-	conf := config.NewConfig()
-	if err := conf.Load(consulSource); err != nil {
-		log.Logf("load config errr!!!", err)
+	for{
+		consulSource := consul.NewSource(
+			consul.WithAddress(defaultConsulServerAddr),
+			consul.WithPrefix(defaultConfigPath),
+			consul.StripPrefix(true),
+		)
+		// 创建新的配置
+		conf := config.NewConfig()
+		if err := conf.Load(consulSource); err != nil {
+			log.Logf("load config errr!!!", err)
+			time.Sleep(time.Second * 5)
+			continue
+		}
+		break
 	}
+
 	log.Log("conf.map", conf.Map())
 	// 侦听文件变动
 	watcher, err := conf.Watch()
