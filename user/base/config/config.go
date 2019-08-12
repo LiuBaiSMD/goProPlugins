@@ -13,7 +13,7 @@ var (
 )
 
 var (
-	defaultConfigPath       = "micro/config/cluster" // 默认的仓库地址
+	defaultConfigPath       = "micro/config" // 默认的仓库地址
 	defaultConsulServerAddr = "127.0.0.1:8500"
 	dockerConsulServerAddr = "consul4:8500"
 	consulConfig            defaultConsulConfig
@@ -35,15 +35,15 @@ func Init() {
 		return
 	}
 	dockerMode := os.Getenv("RUN_DOCKER_MODE")
-	//if dockerMode == "on" {
-	//	log.Logf("docker模式")
-	//	defaultConsulServerAddr = dockerConsulServerAddr
-	//}
+	if dockerMode == "on" {
+		log.Logf("docker模式")
+		defaultConsulServerAddr = dockerConsulServerAddr
+	}
 	log.Log("配置读取模式----> ", dockerMode, "	配置地址---->  ",defaultConsulServerAddr)
 
 	// 从注册中心读取配置
 	consulSource := consul.NewSource(
-		consul.WithAddress("127.0.0.1:8500"),
+		consul.WithAddress(defaultConsulServerAddr),
 		consul.WithPrefix(defaultConfigPath),
 		consul.StripPrefix(true),
 	)
