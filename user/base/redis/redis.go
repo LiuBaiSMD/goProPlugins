@@ -1,10 +1,11 @@
 package redis
 
 import (
+	"github.com/LiuBaiSMD/goProPlugins/user/base/config"
 	"github.com/go-redis/redis"
 	"github.com/micro/go-micro/util/log"
-	"github.com/LiuBaiSMD/goProPlugins/user/base/config"
 	"sync"
+	"os"
 )
 
 var (
@@ -68,8 +69,14 @@ func initSentinel(redisConfig config.RedisConfig) {
 }
 
 func initSingle(redisConfig config.RedisConfig) {
+	var addr string
+	if 	dockerMode := os.Getenv("RUN_DOCKER_MODE");dockerMode == "on"{
+		addr = redisConfig.GetDockerConn()
+	}else{
+		addr = redisConfig.GetConn()
+	}
 	client = redis.NewClient(&redis.Options{
-		Addr:     redisConfig.GetConn(),
+		Addr:     addr,
 		Password: redisConfig.GetPassword(), // no password set
 		DB:       redisConfig.GetDBNum(),    // use default DB
 	})
